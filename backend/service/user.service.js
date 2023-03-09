@@ -8,6 +8,8 @@ const {
     getUserByEmailDb, 
     createUserDb} = require('../db/user.db');
 
+    const {generateToken} = require('../middlewares/jwt');
+
 class USerService {
     
     createUser = async (my_user) => {

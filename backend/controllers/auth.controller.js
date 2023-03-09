@@ -35,6 +35,21 @@ const register = async (req, res, next) => {
     }
 }
 
+const login = async (req, res, next) => {
+    try {
+        if (!(req.body && req.body.email && req.body.password))
+            return res.status(400).json({ message: `Fill in all fields`, ...req.body })
+
+        const loggedin = await userService.login(req.body);
+
+        res.setHeader('Authorization', 'Baerer' + loggedin.token);
+        res.cookie('access_token',loggedin.token, { path: '/', secure: true, sameSite: "strict" })
+        return res.status(200).send(loggedin);
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports ={
-    register
+    register, login
 }
