@@ -18,6 +18,9 @@
     "@angular/platform-browser": "~13.0.0-next.0",
     "@angular/platform-browser-dynamic": "~13.0.0-next.0",
     "@angular/router": "~13.0.0-next.0",
+    "angular-sweetalert-2": "^1.0.1",
+    "bootstrap": "^5.2.3",
+    "ngx-ui-loader": "^13.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
@@ -34,6 +37,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "sweetalert2": "^11.7.3",
     "typescript": "~4.4.3"
   }
 }
