@@ -53,7 +53,10 @@ ALTER TABLE public.admin
     NOT VALID;
 
 ALTER TABLE public.lecture
-    ADD FOREIGN KEY (tenantID)
+    ADD FOREIGN KEY (userID)
     REFERENCES public.users (ID)
     ON DELETE CASCADE
     NOT VALID;
+
+CREATE UNIQUE INDEX users_unique_lower_email_idx
+    ON public.users (lower(email));

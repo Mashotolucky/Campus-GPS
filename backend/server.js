@@ -19,12 +19,12 @@ app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb' , extended: true}));
 
 //test route
-app.get('/api/visitor/test',(req, res) =>{
+app.get('/api/campusgps/test',(req, res) =>{
     res.status(200).send({msg: "Hello World"})
 });
 
 //handles all app routes
-app.use("/api/visitor/",app_routes);
+app.use("/api/campusgps/",app_routes);
 
 //404 resource not found
 app.use((req,res)=>{
