@@ -54,9 +54,32 @@ const getLectureById = async (id) => {
     return lecture[0]
 };
 
+const updateLectureDb = async ({name,lastname, email, id, campus}) => {
+    try {
+     
+     console.log(name);
+     const { rows: user } = await pool.query(
+       `UPDATE users set name = $1, lastname = $2, email = $3
+         where ID = $4 returning name, email, lastname, ID`,
+       [name, lastname, email, id]
+     );
+     const myuser=user[0];
+   console.log(myuser);
+     const {rows:lecture} = await pool.query(
+         `UPDATE lecture set campus=$1 WHERE userID=$2  returning campus`,
+     [campus, myuser.id]);
+ 
+     return {myuser,lecture:lecture[0]}
+ 
+    } catch (error) {
+      throw error;
+    }
+ };
+
 module.exports = {
     createLecturetDb,
     getAllLecturesDb,
     getTotalLecturesDb,
-    getLectureById
+    getLectureById,
+    updateLectureDb
 }

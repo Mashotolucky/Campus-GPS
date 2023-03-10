@@ -55,9 +55,33 @@ const getStudentById = async (id) => {
     return student[0]
 };
 
+const updateStudentDb = async ({name,lastname, email, id, id_no, campus}) => {
+    try {
+     
+     console.log(name);
+     const { rows: user } = await pool.query(
+       `UPDATE users set name = $1, lastname = $2, email = $3
+         where ID = $4 returning name, email, lastname, ID`,
+       [name, lastname, email, id]
+     );
+     const myuser=user[0];
+   console.log(myuser);
+     const {rows:student} = await pool.query(
+         `UPDATE student set id_no=$1,campus=$2 WHERE userID=$3  returning id_no, campus`,
+     [id_no, campus, myuser.id]);
+ 
+     return {myuser,student:student[0]}
+ 
+    } catch (error) {
+      throw error;
+    }
+ 
+ };
+
 module.exports = {
     createStudentDb,
     getAllStudentsDb,
     getTotalStudentsDb,
-    getStudentById
+    getStudentById,
+    updateStudentDb
 }

@@ -24,7 +24,15 @@ const getUserByEmailDb = async (email) => {
         [email]
     );
     return exists? exists[0]: false;
-} 
+}
+
+const changeUserPasswordDb = async (hashedPassword, email) =>{
+    return await pool.query(
+        "update users set password = $1 where email = $2",
+        [hashedPassword, email]
+    );
+};
+
 
 // name varchar(100),
 // 	lastname varchar(100),
@@ -33,5 +41,6 @@ const getUserByEmailDb = async (email) => {
 
 module.exports = {
     createUserDb,
-    getUserByEmailDb
+    getUserByEmailDb,
+    changeUserPasswordDb
 }
