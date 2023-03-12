@@ -76,10 +76,27 @@ const updateLectureDb = async ({name,lastname, email, id, campus}) => {
     }
  };
 
+ const deleteLectureByIdDb = async(id) => {
+    try {
+        const lecture = await pool.query(
+            `DELETE FROM users 
+             USING lecture
+             WHERE users.id = $1
+             AND lecture.userid = users.id
+            `,[id]
+        );
+
+        return lecture.rows;
+    } catch (error) {
+        throw error;
+    }
+ }
+
 module.exports = {
     createLecturetDb,
     getAllLecturesDb,
     getTotalLecturesDb,
     getLectureById,
-    updateLectureDb
+    updateLectureDb,
+    deleteLectureByIdDb
 }

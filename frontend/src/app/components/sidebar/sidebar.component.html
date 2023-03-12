@@ -13,7 +13,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-        <a class="nav-link" routerLink="/admin">
+        <a class="nav-link" routerLink="/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
@@ -24,31 +24,27 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        INVESTORS
+        <!-- INVESTORS -->
+        <button type="button" routerLink="profile" class="btn btn-primary px-3 mx-4" data-toggle="modal" data-target="#exampleModal">
+            Edit profile
+          </button>
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        <a class="nav-link collapsed" routerLink="/dashboard" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Investors pages</span>
+            <span>Campus Overview</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Components:</h6>
-                <a class="collapse-item" routerLink="/buttons">View investors</a>
-                <a class="collapse-item" routerLink="/cards">List of investors</a>
-            </div>
-        </div>
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+        <a class="nav-link collapsed" routerLink="/dashboard" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Investors report</span>
+            <span>Request Direction</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
@@ -67,7 +63,7 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        FARMERS
+        USERS
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
@@ -75,14 +71,14 @@
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
             aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Farmers Pages</span>
+            <span>Users Pages</span>
         </a>
         <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <!-- <h6 class="collapse-header">Login Screens:</h6> -->
-                <a class="collapse-item" routerLink="addfarmer">Add Farmer</a>
-                <a class="collapse-item" routerLink="tables">View farmers</a>
+                <a class="collapse-item" routerLink="lecture/all">View lectures</a>
+                <a class="collapse-item" routerLink="student/all">View students</a>
                 
                 <!-- <a class="collapse-item" routerLink="forgot-password">Forgot Password</a>
                 <div class="collapse-divider"></div>
@@ -93,26 +89,27 @@
         </div>
     </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" routerLink="/charts">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
-        <a class="nav-link" routerLink="tables">
-            <i class="fas fa-fw fa-table"></i>
-            <span>List of farmer</span></a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- Sidebar Toggler (Sidebar) -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
-
+   
 </ul>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

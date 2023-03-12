@@ -14,6 +14,10 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { LectureListComponent } from './pages/lecture-list/lecture-list.component';
+import { StudentListComponent } from './pages/student-list/student-list.component';
+import { MapDirectionsComponent } from './pages/map-directions/map-directions.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,11 @@ import { AdminComponent } from './pages/admin/admin.component';
     SidebarComponent,
     TopbarComponent,
     AdminHomeComponent,
-    AdminComponent
+    AdminComponent,
+    ProfileComponent,
+    LectureListComponent,
+    StudentListComponent,
+    MapDirectionsComponent
   ],
   imports: [
     BrowserModule,

@@ -106,8 +106,8 @@ export class RegisterComponent implements OnInit {
 
             Swal.fire(
               {
-                title: 'Successful Registered',
-                text: 'Welcome',
+                title: 'Registered',
+                text: 'Please sign In',
                 timer: 4000,
                 showConfirmButton: false,
                 color: 'green'
@@ -118,7 +118,7 @@ export class RegisterComponent implements OnInit {
               icon: 'success'
             })
 
-            this.router.navigate(['/login']);
+            this.router.navigate(['/']);
             this.ngxLoader.stop()
           },
           error: err => {

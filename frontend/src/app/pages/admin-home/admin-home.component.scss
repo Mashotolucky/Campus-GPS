@@ -1,0 +1,25 @@
+iframe {
+    width: 660px;
+    height: 500px;
+}
+
+@media screen and (max-width: 500px) {
+    iframe {
+        width: 330px;
+        height: 400px;
+        padding-right: 3rem;
+    }
+  }
+
+@media screen and (max-width: 778px) {
+    iframe {
+        width: 500px;
+        height: 400px;
+        padding-right: 3rem;
+    }
+  }
+
+.card {
+    box-shadow: 1.3px 3px #a19f9f ;
+    cursor: pointer;
+}

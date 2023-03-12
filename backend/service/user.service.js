@@ -22,7 +22,7 @@ class USerService {
             if(existing_user) {throw Error("Email taken");}
 
             //checks if email is from tut
-            if(!my_user.email.includes("@tut4life.co.za")) {throw Error("Not a tut email")}
+            if(!my_user.email.includes("@tut4life.ac.za")) {throw Error("Not a tut email")}
 
             //encrypt/ hash password
             const hashedPassword = await hashPassword(my_user.password);

@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
         Swal.fire(
           {
-            title: 'loggedin',
+            title: 'Signed In',
             text: 'Welcome',
             timer: 4000,
             showConfirmButton: false,
@@ -72,14 +72,16 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("auth-token", myobject.token);
         }
 
-        if(myobject.user.role === "ADMIN"){
-          this.router.navigate(['/admin']);
-        }
+        // if(myobject.user.role === "ADMIN"){
+        //   this.router.navigate(['/admin']);
+        // }
 
-        if(myobject.user.role === "INVESTOR"){
-          this.router.navigate(['/dashboard']);
+        // if(myobject.user.role === "INVESTOR"){
+        //   this.router.navigate(['/dashboard']);
 
-        }
+        // }
+
+        this.router.navigate(['/dashboard']);
 
         this.ngxLoader.stop()
 

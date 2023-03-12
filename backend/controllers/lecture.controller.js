@@ -1,4 +1,4 @@
-const {updateLectureDb} = require("../db/lecture.db");
+const {updateLectureDb, getAllLecturesDb, deleteLectureByIdDb} = require("../db/lecture.db");
 
 const updateLecture = async(req, res, next) => {
     try {
@@ -14,6 +14,31 @@ const updateLecture = async(req, res, next) => {
     }
 }
 
+const getAllLectures = async(req, res, next) => {
+    try {
+        const lectures = await getAllLecturesDb();
+        return res.status(200).send(lectures);
+    } catch (error) {
+        next(error)
+    }
+}
+
+const deleteLectureById = async(req, res, next) => {
+    try {
+        const id = req.params.id;
+
+        console.log(id);
+        const lecture = await deleteLectureByIdDb(id);
+
+        if(!lecture){throw new Error("Something went wrong")};
+        return res.status(200).send({msg: 'Lecture deleted'});
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports ={
-    updateLecture
+    updateLecture,
+    getAllLectures,
+    deleteLectureById
 }

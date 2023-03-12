@@ -47,12 +47,17 @@ const getTotalStudentsDb = async () =>{
 };
 
 const getStudentById = async (id) => {
-    const {rows: student} = await pool.query(`select * from users, student 
-    where users.ID = student.userID
-    AND student.ID = $1`,[id]);
+    try {
+        const student = await pool.query(`select * from users, student 
+        where users.ID = student.userID
+        AND student.ID = $1`,[id]);
 
-    console.log(student[0]);
-    return student[0]
+        console.log(student.rows[0]);
+        return student.rows[0];
+    } catch (error) {
+        throw error;
+    }
+    
 };
 
 const updateStudentDb = async ({name,lastname, email, id, id_no, campus}) => {
@@ -78,10 +83,26 @@ const updateStudentDb = async ({name,lastname, email, id, id_no, campus}) => {
  
  };
 
+ const deleteStudentByIdDb = async(id) => {
+    try {
+        const student = await pool.query(
+            `DELETE FROM users 
+             USING student
+             WHERE users.id = $1
+             AND student.userid = users.id
+            `,[id]
+        );
+
+        return student.rows;
+    } catch (error) {
+        throw error;
+    }
+ }
 module.exports = {
     createStudentDb,
     getAllStudentsDb,
     getTotalStudentsDb,
     getStudentById,
-    updateStudentDb
+    updateStudentDb,
+    deleteStudentByIdDb
 }
