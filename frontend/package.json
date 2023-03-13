@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node index.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -26,6 +26,7 @@
     "angular-sweetalert-2": "^1.0.1",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.8.3",
+    "express": "^4.18.2",
     "leaflet": "^1.9.3",
     "leaflet-routing-machine": "^3.2.12",
     "mapbox-gl": "^2.13.0",
