@@ -38,11 +38,25 @@ export class MapboxServiceService {
     return this.http.get(url);
   }
 
-  orsRouteMap(markers: any): Observable<any>{
-    console.log(markers);
+  orsRouteMap(waypoints: {lat: number, lng: number}[]): Observable<any>{
+    console.log(waypoints);
+
+    let coordinates = '';
+
+    // Build the coordinates string from the waypoints array
+    waypoints.forEach((waypoint: any, index: any) => {
+      const { lat, lng } = waypoint;
+      coordinates += `${lng},${lat}`;
+      if (index < waypoints.length - 1) {
+        coordinates += '|'; // Add separator for all but the last coordinate
+      }
+    });
+
+    console.log(coordinates);
+    
     
     const ORS_API_KEY = environment.ors.ors_key; // Replace with your OpenRouteService API key
-    const url = `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${ORS_API_KEY}&start=${markers[0].lng},${markers[0].lat}&end=${markers[1].lng},${markers[1].lat}`;
+    const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&coordinates=${coordinates}`;
 
     return this.http.get(url)
   }

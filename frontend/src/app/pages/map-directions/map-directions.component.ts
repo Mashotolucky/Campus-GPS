@@ -27,10 +27,12 @@ export class MapDirectionsComponent implements OnInit {
 
     const markers = [
       { lat: -25.523976, lng: 28.108543 },
-       { lat: -25.549327, lng: 28.08957 }  
+       { lat: -25.549327, lng: 28.08957 },
+       {lat: -25.66288803, lng: 28.10889821}
     ];
 
     this.addMaker(this.map, markers)
+    this.wonderparkMaker(this.map, markers)
     this.marker = L.marker([-25.523976, 28.108543]).addTo(this.map)
 
     this.mapService.orsRouteMap(markers)
@@ -60,6 +62,10 @@ export class MapDirectionsComponent implements OnInit {
 
   addMaker(map: any, latlng: any): void{
     this.marker = L.marker([-25.549327, 28.08957]).addTo(map)
+  }
+
+  wonderparkMaker(map: any, latlng: any): void{
+    this.marker = L.marker([-25.66288803, 28.10889821]).addTo(map)
   }
 
 }

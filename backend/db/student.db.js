@@ -1,14 +1,14 @@
 const {pool} = require("../config/dbconfig");
 
 
-const createStudentDb = async ({userID, id_no, campus }) =>{
+const createStudentDb = async ({userID, id_no, student_no }) =>{
 
     try {
         const student = await pool.query(
-            `INSERT INTO student(userID, id_no, campus)
+            `INSERT INTO student(userID, id_no, student_no)
              VALUES($1, $2, $3)
-             RETURNING userID, id_no, campus`,
-             [userID, id_no, campus]
+             RETURNING userID, id_no, student_no`,
+             [userID, id_no, student_no]
         );
         const mytenant = student.rows[0];
         console.log(mytenant);
@@ -65,20 +65,20 @@ const updateStudentDb = async ({name,lastname, email, id, id_no, campus}) => {
      
      console.log(name);
      const { rows: user } = await pool.query(
-       `UPDATE users set name = $1, lastname = $2, email = $3
-         where ID = $4 returning name, email, lastname, ID`,
-       [name, lastname, email, id]
+       `UPDATE users set name = $1, lastname = $2, email = $3, campus = $4
+         where ID = $5 returning name, email, lastname, ID, campus`,
+       [name, lastname, email, campus, id]
      );
      const myuser=user[0];
    console.log(myuser);
      const {rows:student} = await pool.query(
-         `UPDATE student set id_no=$1,campus=$2 WHERE userID=$3  returning id_no, campus`,
+         `UPDATE student set  id_no=$1,student_no=$2 WHERE userID=$3  returning id_no, student_no`,
      [id_no, campus, myuser.id]);
  
      return {myuser,student:student[0]}
  
     } catch (error) {
-      throw error;
+    //   throw error;
     }
  
  };

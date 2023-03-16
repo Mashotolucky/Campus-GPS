@@ -4,7 +4,9 @@ const updateStudent = async(req, res, next) => {
     try {
         const data = req.body;
 
-        if(!data.email.includes("@tut4life.co.za")) {throw Error("Not a tut email")}
+        if(data.email){
+            if(!data.email.includes("@tut4life.ac.za")) {throw Error("Not a tut email")}
+        }
 
         const student = await updateStudentDb(data);
 

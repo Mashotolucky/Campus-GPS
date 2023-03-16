@@ -1,13 +1,13 @@
 const {pool} = require("../config/dbconfig");
 
-const createLecturetDb = async ({userID,  campus }) =>{
+const createLecturetDb = async ({userID,  stuff_no }) =>{
 
     try {
         const lecture = await pool.query(
-            `INSERT INTO lecture(userID, campus)
+            `INSERT INTO lecture(userID, stuff_no)
              VALUES($1, $2)
-             RETURNING userID, campus`,
-             [userID, campus]
+             RETURNING userID, stuff_no`,
+             [userID, stuff_no]
         );
         const mytenant = lecture.rows[0];
         console.log(mytenant);
@@ -54,20 +54,20 @@ const getLectureById = async (id) => {
     return lecture[0]
 };
 
-const updateLectureDb = async ({name,lastname, email, id, campus}) => {
+const updateLectureDb = async ({name,lastname, email, id, campus, stuff_no}) => {
     try {
      
      console.log(name);
      const { rows: user } = await pool.query(
-       `UPDATE users set name = $1, lastname = $2, email = $3
-         where ID = $4 returning name, email, lastname, ID`,
-       [name, lastname, email, id]
+       `UPDATE users set name = $1, lastname = $2, email = $3, campus = $4
+         where ID = $5 returning name, email, lastname, campus, ID`,
+       [name, lastname, email, campus, id]
      );
      const myuser=user[0];
-   console.log(myuser);
+     console.log(myuser);
      const {rows:lecture} = await pool.query(
-         `UPDATE lecture set campus=$1 WHERE userID=$2  returning campus`,
-     [campus, myuser.id]);
+         `UPDATE lecture set stuff_no=$1 WHERE userID=$2  returning stuff_no, userID`,
+     [stuff_no, myuser.id]);
  
      return {myuser,lecture:lecture[0]}
  

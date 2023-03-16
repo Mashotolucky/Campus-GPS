@@ -4,6 +4,7 @@ CREATE TABLE public.users(
 	lastname varchar(100),
 	email varchar(100) unique,
 	password varchar(100) not null,
+    campus varchar(100),
 	role character varying(10) NOT NULL,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
 	updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
@@ -14,8 +15,8 @@ CREATE TABLE public.users(
 CREATE TABLE public.student(
 	ID serial NOT NULL, 
 	userID integer,
+    student_no integer,
     id_no varchar(100),
-    campus varchar(100),
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
 	Primary Key(ID)
@@ -24,7 +25,6 @@ CREATE TABLE public.student(
 CREATE TABLE public.admin(
 	ID serial NOT NULL, 
 	userID integer,
-    campus varchar(100),
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
 	Primary Key(ID)
@@ -33,7 +33,7 @@ CREATE TABLE public.admin(
 CREATE TABLE public.lecture(
     ID serial NOT NULL,
     userID integer,
-    campus varchar(100),
+    stuff_no integer,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
 	Primary Key(ID)
