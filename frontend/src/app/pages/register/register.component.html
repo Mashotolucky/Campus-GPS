@@ -59,7 +59,6 @@
                 <span class="details text-danger" *ngIf="!passwordMatch()">{{passwordMessage}}</span>
               </div>
 
-
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -80,9 +79,20 @@
               </div>
 
               <div class="form-group">
+                <input type="number" class="form-control" *ngIf="ifSTUDENT()" formControlName="student_no"
+                  placeholder="Enter Student No*" value="" />
+              </div>
+
+              <div class="form-group">
+                <input type="number" class="form-control" *ngIf="ifLECTURE()" formControlName="student_no"
+                  placeholder="Enter Stuff No*" value="" />
+              </div>
+
+              <div class="form-group">
                 <p class="mt-">Choose role</p>
                 <select class="form-select form-control" formControlName="role" aria-label="Default select example">
                   <!-- <option [selected]="true" value="">Choose your role</option> -->
+                  <option value="ADMIN">ADMIN</option>
                   <option value="STUDENT">STUDENT</option>
                   <option value="LECTURE">LECTURE</option>
                 </select>

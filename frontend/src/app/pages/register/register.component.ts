@@ -92,6 +92,15 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  ifLECTURE(): Boolean {
+    if (this.form.value.role === "LECTURE") {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
 
   submit(): void {
     if (this.passwordMatch()) {

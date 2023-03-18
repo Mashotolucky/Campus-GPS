@@ -71,7 +71,7 @@ class USerService {
         const user = await getUserByEmailDb(email);
 
         //if user not fount 
-        if(!user) {throw Error("User not found check email and password");}
+        if(!user) {throw new Error("User not found check email and password");}
 
         //call function to compare hash with plain user input(password);
         const result = await comparePassword(password, user.password);

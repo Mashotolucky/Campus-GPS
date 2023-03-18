@@ -4,8 +4,8 @@
 
 
 const BaseUrl = 'http://10.10.2.155:3100';
-const Backend = 'https://campus-gps-backend.onrender.com/api/campusgps/';
-const devbaseUrl = 'https://campus-gps-backend.onrender.com/api/campusgps/';
+const Backend = 'http://localhost:4000/api/campusgps/';
+const devbaseUrl = 'http://localhost:4000/api/campusgps/';
 
 export const environment = {
   production: false,

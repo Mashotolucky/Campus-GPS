@@ -18,22 +18,55 @@ export class MapDirectionsComponent implements OnInit {
   constructor(private mapService: MapboxServiceService) { }
 
   ngOnInit(): void {
-    this.map = L.map('map').setView([-25.549327, 28.08957], 13);
+    this.map = L.map('map').setView([-25.54050582, 28.096141], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
       maxZoom: 18
     }).addTo(this.map);
     
+    const destination = {lat: -25.541657366056807, lng: 28.096021413803104};
 
     const markers = [
-      { lat: -25.523976, lng: 28.108543 },
-       { lat: -25.549327, lng: 28.08957 },
-       {lat: -25.66288803, lng: 28.10889821}
+      {lat: -25.540737731295003, lng: 28.096171617507938},
+      {lat: -25.5408345352863, lng: 28.096053600311283},
+      {lat: -25.541212070105594, lng: 28.096005320549015},
+      {lat: -25.54143471828793, lng: 28.096058964729313},
+      {lat: destination.lat, lng: 28.096021413803104}
     ];
+
+     
+      // {lat: -25.540737731295003, lng: 28.096171617507938}
+      // 1
+      // : 
+      // {lat: -25.5408345352863, lng: 28.096053600311283}
+      // 2
+      // : 
+      // {lat: -25.541212070105594, lng: 28.096005320549015}
+      // 3
+      // : 
+      // {lat: -25.54143471828793, lng: 28.096058964729313}
+      // 4
+      // : 
+      // {lat: -25.541657366056807, lng: 28.096021413803104}
+
+    const clickedCoords: { lat: any; lng: any; }[] = [];
+
+    this.map.on('click', function(e: any) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        var clickedPoint = {
+            lat: lat,
+            lng: lng
+        };
+        clickedCoords.push(clickedPoint);
+        console.log("Clicked coordinates:", clickedCoords);
+    });
 
     this.addMaker(this.map, markers)
     this.wonderparkMaker(this.map, markers)
     this.marker = L.marker([-25.523976, 28.108543]).addTo(this.map)
+
+    let routePolyline = L.polyline(markers, {color: 'red', weight: 2.5}).addTo(this.map);
 
     this.mapService.orsRouteMap(markers)
       .subscribe({next: response =>{

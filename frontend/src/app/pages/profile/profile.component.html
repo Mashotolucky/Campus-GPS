@@ -91,8 +91,13 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6"><input type="text" class="form-control" placeholder="Email" [(ngModel)]="email" value="{{user.email}}"></div>
-                    <div class="col-md-6"><input type="number" class="form-control" value="9903266130083" placeholder="ID number"></div>
+                    <div class="col-md-6"><input type="number" class="form-control" value="{{user.id_no}}" [(ngModel)]="id_no"  placeholder="ID number"></div>
                 </div>
+                <div class="row mt-3">
+                  <div class="col-md-6" *ngIf="isStudent"><input type="number" class="form-control" placeholder="Student No" [(ngModel)]="student_no" value="{{user.student_no}}"></div>
+                  <div class="col-md-6" *ngIf="isLecture"><input type="number" class="form-control" value="{{user.stuff_no}}" [(ngModel)]="stuff_no"  placeholder="Stuff No"></div>
+              </div>
+             
                 <!-- <div class="row mt-3">
                     <div class="col-md-6"><input type="text" class="form-control" placeholder="address" value="D-113, right avenue block, CA,USA"></div>
                     <div class="col-md-6"><input type="text" class="form-control" value="USA" placeholder="Country"></div>

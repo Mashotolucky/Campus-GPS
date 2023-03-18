@@ -9,6 +9,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { StudentListComponent } from './pages/student-list/student-list.component';
 
+import { AuthGuardService } from './services/auth-guard.service';
+
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
@@ -21,6 +23,7 @@ const routes: Routes = [
       {path: 'profile', component: ProfileComponent},
       {path: 'map/direction', component: MapDirectionsComponent}
     ],
+    canActivate: [AuthGuardService]
   }
 ];
 

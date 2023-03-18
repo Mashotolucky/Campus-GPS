@@ -16,6 +16,8 @@ export class MapboxServiceService {
   private readonly API_ENDPOINT = 'https://api.mapbox.com/directions/v5/mapbox/driving';
   private readonly ACCESS_TOKEN = environment.mapbox.accessToken;
 
+  BaseUrl = environment.production? environment.backend +'/map' : environment.devbaseUrl+'/map';
+
   constructor(private http: HttpClient) { }
 
   getDirections(origin: string, destination: string): Observable<any> {
@@ -59,5 +61,9 @@ export class MapboxServiceService {
     const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&coordinates=${coordinates}`;
 
     return this.http.get(url)
+  }
+
+  getLocationByName(name: any): Observable<any>{
+    return this.http.get(this.BaseUrl+'/location',name);
   }
 }

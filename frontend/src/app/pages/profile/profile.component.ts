@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { LectureService } from 'src/app/services/lecture.service';
 import { StudentService } from 'src/app/services/student.service';
 import Swal from 'sweetalert2';
@@ -15,11 +16,23 @@ export class ProfileComponent implements OnInit {
   name: any;
   lastname: any;
   email: any;
+  id_no: any;
+  stuff_no: any;
+  student_no: any;
   currentUser: any;
 
-  constructor(private lectureService: LectureService, private studentService: StudentService, private router: Router) { }
+  isAdmin: any;
+  isLecture: any;
+  isStudent: any;
+
+  constructor(private auth: AuthService,private lectureService: LectureService, private studentService: StudentService, private router: Router) { }
 
   ngOnInit(): void {
+
+    this.isAdmin = this.auth.isAdmin();
+    this.isLecture = this.auth.isLecture();
+    this.isStudent = this.auth.isStudent();
+
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     console.log(this.user);
     this.getUser();
@@ -50,7 +63,9 @@ export class ProfileComponent implements OnInit {
       lastname: this.lastname || this.user.lastname,
       name:  this.name || this.user.name,
       email: this.email || this.user.email,
-      id_no: this.user.id_no
+      id_no: this.id_no || this.user.id_no,
+      stuff_no: this.stuff_no || this.user.stuff_no,
+      student_no: this.student_no || this.user.student_no
     }
 
     console.log(data);

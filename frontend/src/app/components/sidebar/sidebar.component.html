@@ -1,5 +1,5 @@
-<ul class="navbar-nav bg-success sidebar sidebar-dark accordion" id="accordionSidebar">
-
+<ul class="navbar-nav  sidebar sidebar-dark accordion" id="accordionSidebar" [ngStyle]="{'background-color': isAdmin ? '#037a35' : '#056094'}">
+    <!-- [ngClass]=" isAdmin == 'ADMIN' ? 'navbarcolor' : 'clientnav'" -->
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" routerLink="/admin">
         <div class="sidebar-brand-icon rotate-n-15">
@@ -62,12 +62,12 @@
     <hr class="sidebar-divider">
 
     <!-- Heading -->
-    <div class="sidebar-heading">
+    <div class="sidebar-heading" *ngIf="isAdmin">
         USERS
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
+    <li class="nav-item active"  *ngIf="isAdmin">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
             aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
