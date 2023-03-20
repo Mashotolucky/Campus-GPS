@@ -53,17 +53,6 @@ export class MapDirectionsComponent implements OnInit {
         console.log("Clicked coordinates:", clickedCoords);
     });
 
-
-    // const destination_lat = this.mapData.location[0].lat;
-    // const destination_lng = this.mapData.data.location[0].lng;
-
-    // console.log('lat',destination_lat);
-    
-
-    // this.marker = L.marker([destination_lat, destination_lng]).addTo(this.map);
-
-    let routePolyline = L.polyline(markers, {color: 'red', weight: 2.5}).addTo(this.map);
-
     this.mapService.orsRouteMap(markers)
       .subscribe({next: response =>{
         const route = response.features[0].geometry.coordinates.map((coord: any[]) => [coord[1], coord[0]]);
@@ -102,14 +91,41 @@ export class MapDirectionsComponent implements OnInit {
       const name = params['name'];
       console.log('location name', name);
       const nameBody = {name: name}
+
+      const routeArr: any[] = [];
       // Do something with the name parameter
       this.mapService.getLocationByName(nameBody)
       .subscribe(res => {
         this.mapData = res;
         console.log(this.mapData.data);
+        routeArr.push(this.mapData.data.waypoints);
+  
+        // routeArr.push(this.mapData.data.location[0]);
+        console.log(routeArr[0]);
+        const waypoints = routeArr[0];
+        const latLngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
+
+        const location = this.mapData.data.location[0];
+
+        console.log(location);
+
+        const latLng = {
+          lat: location.lat,
+          lng: location.lng
+        };
+
+        latLngArray.push(latLng);
+        console.log(latLngArray);
+
+        this.makeRoute(latLngArray)
+                
         this.addMaker(this.map, this.mapData.data.location[0]);
       })
     });
+  }
+
+  makeRoute(route: any): void{
+    let routePolyline = L.polyline(route, {color: 'red', weight: 2.5}).addTo(this.map);
   }
 
 }
