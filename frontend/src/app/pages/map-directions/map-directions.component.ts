@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as L from 'leaflet';
 import  'leaflet-routing-machine';
 import { MapboxServiceService } from 'src/app/services/mapbox-service.service';
@@ -15,9 +16,13 @@ export class MapDirectionsComponent implements OnInit {
   currentLocationMarker: any;
   routingControl: any;
 
-  constructor(private mapService: MapboxServiceService) { }
+  mapData: any;
+
+  constructor(private mapService: MapboxServiceService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.reloadOnInit();
+
     this.map = L.map('map').setView([-25.54050582, 28.096141], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -34,20 +39,6 @@ export class MapDirectionsComponent implements OnInit {
       {lat: destination.lat, lng: 28.096021413803104}
     ];
 
-     
-      // {lat: -25.540737731295003, lng: 28.096171617507938}
-      // 1
-      // : 
-      // {lat: -25.5408345352863, lng: 28.096053600311283}
-      // 2
-      // : 
-      // {lat: -25.541212070105594, lng: 28.096005320549015}
-      // 3
-      // : 
-      // {lat: -25.54143471828793, lng: 28.096058964729313}
-      // 4
-      // : 
-      // {lat: -25.541657366056807, lng: 28.096021413803104}
 
     const clickedCoords: { lat: any; lng: any; }[] = [];
 
@@ -62,9 +53,14 @@ export class MapDirectionsComponent implements OnInit {
         console.log("Clicked coordinates:", clickedCoords);
     });
 
-    this.addMaker(this.map, markers)
-    this.wonderparkMaker(this.map, markers)
-    this.marker = L.marker([-25.523976, 28.108543]).addTo(this.map)
+
+    // const destination_lat = this.mapData.location[0].lat;
+    // const destination_lng = this.mapData.data.location[0].lng;
+
+    // console.log('lat',destination_lat);
+    
+
+    // this.marker = L.marker([destination_lat, destination_lng]).addTo(this.map);
 
     let routePolyline = L.polyline(markers, {color: 'red', weight: 2.5}).addTo(this.map);
 
@@ -94,11 +90,26 @@ export class MapDirectionsComponent implements OnInit {
   }
 
   addMaker(map: any, latlng: any): void{
-    this.marker = L.marker([-25.549327, 28.08957]).addTo(map)
+    this.marker = L.marker([latlng.lat, latlng.lng]).addTo(map)
   }
 
   wonderparkMaker(map: any, latlng: any): void{
-    this.marker = L.marker([-25.66288803, 28.10889821]).addTo(map)
+    this.marker = L.marker([latlng.lat, latlng.lng]).addTo(map)
+  }
+
+  reloadOnInit():void {
+    this.route.queryParams.subscribe(params => {
+      const name = params['name'];
+      console.log('location name', name);
+      const nameBody = {name: name}
+      // Do something with the name parameter
+      this.mapService.getLocationByName(nameBody)
+      .subscribe(res => {
+        this.mapData = res;
+        console.log(this.mapData.data);
+        this.addMaker(this.map, this.mapData.data.location[0]);
+      })
+    });
   }
 
 }

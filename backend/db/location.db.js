@@ -13,7 +13,7 @@ const getLocationByNameDb = async(name) =>{
         WHERE location.name = $1;
         `,[name]
     );
-
+    console.log(location.rows[0]);
     return location.rows[0]; 
     } catch (error) {
         throw error;

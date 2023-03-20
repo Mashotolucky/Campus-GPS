@@ -64,6 +64,8 @@ export class MapboxServiceService {
   }
 
   getLocationByName(name: any): Observable<any>{
-    return this.http.get(this.BaseUrl+'/location',name);
+    console.log(name);
+    
+    return this.http.post(this.BaseUrl+'/location',name);
   }
 }
