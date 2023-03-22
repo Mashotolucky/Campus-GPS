@@ -18,6 +18,8 @@ export class MapboxServiceService {
 
   BaseUrl = environment.production? environment.backend +'/map' : environment.devbaseUrl+'/map';
 
+  liveLatLng: any;
+
   constructor(private http: HttpClient) { }
 
   getDirections(origin: string, destination: string): Observable<any> {
@@ -67,5 +69,13 @@ export class MapboxServiceService {
     console.log(name);
     
     return this.http.post(this.BaseUrl+'/location',name);
+  }
+
+  getLiveLocation(latLang: any){
+    return latLang;
+  }
+
+  passLocation(): any{
+    return this.liveLatLng;
   }
 }

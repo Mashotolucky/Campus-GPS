@@ -15,30 +15,26 @@ export class MapDirectionsComponent implements OnInit {
   marker: any;
   currentLocationMarker: any;
   routingControl: any;
+  currentLatLng: any;
+
+  arraylist: any;
 
   mapData: any;
 
   constructor(private mapService: MapboxServiceService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.reloadOnInit();
+    
 
     this.map = L.map('map').setView([-25.54050582, 28.096141], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      // attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
       maxZoom: 18
     }).addTo(this.map);
+
+    // const latLng = this.getLiveLocation(this.map);
     
-    const destination = {lat: -25.541657366056807, lng: 28.096021413803104};
-
-    const markers = [
-      {lat: -25.540737731295003, lng: 28.096171617507938},
-      {lat: -25.5408345352863, lng: 28.096053600311283},
-      {lat: -25.541212070105594, lng: 28.096005320549015},
-      {lat: -25.54143471828793, lng: 28.096058964729313},
-      {lat: destination.lat, lng: 28.096021413803104}
-    ];
-
+    
+    this.reloadOnInit();
 
     const clickedCoords: { lat: any; lng: any; }[] = [];
 
@@ -53,36 +49,9 @@ export class MapDirectionsComponent implements OnInit {
         console.log("Clicked coordinates:", clickedCoords);
     });
 
-    this.mapService.orsRouteMap(markers)
-      .subscribe({next: response =>{
-        const route = response.features[0].geometry.coordinates.map((coord: any[]) => [coord[1], coord[0]]);
-        const polyline = L.polyline(route, { color: 'red' }).addTo(this.map);
-        this.map.fitBounds(polyline.getBounds());
-      },
-      error: err =>{
-        console.log('erorr',err);
-      }
-    })
-
-    this.map.on('locationfound', (e: any) => {
-      const latlng = L.latLng(e.latlng.lat, e.latlng.lng);
-      console.log(latlng);
-      
-      this.currentLocationMarker.setLatLng(latlng);
-      console.log(this.currentLocationMarker);
-      
-      this.routingControl.spliceWaypoints(0, 1, latlng);
-    });
-
-    this.map.locate({ watch: true });
-
   }
 
   addMaker(map: any, latlng: any): void{
-    this.marker = L.marker([latlng.lat, latlng.lng]).addTo(map)
-  }
-
-  wonderparkMaker(map: any, latlng: any): void{
     this.marker = L.marker([latlng.lat, latlng.lng]).addTo(map)
   }
 
@@ -100,14 +69,10 @@ export class MapDirectionsComponent implements OnInit {
         console.log(this.mapData.data);
         routeArr.push(this.mapData.data.waypoints);
   
-        // routeArr.push(this.mapData.data.location[0]);
-        console.log(routeArr[0]);
         const waypoints = routeArr[0];
         const latLngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
 
         const location = this.mapData.data.location[0];
-
-        console.log(location);
 
         const latLng = {
           lat: location.lat,
@@ -117,9 +82,62 @@ export class MapDirectionsComponent implements OnInit {
         latLngArray.push(latLng);
         console.log(latLngArray);
 
-        this.makeRoute(latLngArray)
+
+        this.arraylist = latLngArray;
+        
                 
         this.addMaker(this.map, this.mapData.data.location[0]);
+
+        //  Get Current live location
+        this.map.locate({setView: true});
+        this.map.on('locationfound', (e: any) => {
+          console.log(e.latlng);
+
+          latLngArray.unshift(e.latlng);
+          console.log(latLngArray);
+
+          this.makeRoute(latLngArray);
+          
+          let radius = e.accuracy / 340 ;
+          let circle = L.circle(e.latlng, {
+            radius: radius,
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+            stroke: false
+          }).addTo(this.map);
+        });
+
+        this.map.on('locationerror', (e: any) => {
+          console.log(e.message);
+        });
+
+        this.map.on('load', (e: any) => {
+          this.map.locate({watch: true, enableHighAccuracy: true});
+        });
+
+        this.map.on('locationfound', (e: any) => {
+          console.log(e.latlng);
+
+          this.mapService.getLiveLocation(e.latLng);
+          
+          let radius = e.accuracy / 340;
+          let circle = L.circle(e.latlng, {
+            radius: radius,
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+            stroke: false
+          }).addTo(this.map);
+
+          this.map.on('locationupdate', (e: any) => {
+            circle.setLatLng(e.latlng);
+            circle.setRadius(e.accuracy / 340);
+
+          });
+        });
+
+        this.map.on('locationerror', (e: any) => {
+          console.log(e.message);
+        });
       })
     });
   }
@@ -128,4 +146,56 @@ export class MapDirectionsComponent implements OnInit {
     let routePolyline = L.polyline(route, {color: 'red', weight: 2.5}).addTo(this.map);
   }
 
+
+  // getLiveLocation(map: any): any{
+
+  //   map.locate({setView: true});
+  //   map.on('locationfound', (e: any) => {
+  //     console.log(e.latlng);
+
+  //     let radius = e.accuracy / 340 ;
+  //     let circle = L.circle(e.latlng, {
+  //       radius: radius,
+  //       fillColor: 'blue',
+  //       fillOpacity: 0.2,
+  //       stroke: false
+  //     }).addTo(map);
+  //   });
+
+  //   map.on('locationerror', (e: any) => {
+  //     console.log(e.message);
+  //   });
+
+  //   map.on('load', (e: any) => {
+  //     map.locate({watch: true, enableHighAccuracy: true});
+  //   });
+
+  //   map.on('locationfound', (e: any) => {
+  //     console.log(e.latlng);
+
+  //     this.mapService.getLiveLocation(e.latLng);
+      
+  //     let radius = e.accuracy / 340;
+  //     let circle = L.circle(e.latlng, {
+  //       radius: radius,
+  //       fillColor: 'blue',
+  //       fillOpacity: 0.2,
+  //       stroke: false
+  //     }).addTo(map);
+
+  //     map.on('locationupdate', (e: any) => {
+  //       circle.setLatLng(e.latlng);
+  //       circle.setRadius(e.accuracy / 340);
+
+  //     });
+  //   });
+
+  //   map.on('locationerror', (e: any) => {
+  //     console.log(e.message);
+  //   });
+
+
+  // }
+
 }
+

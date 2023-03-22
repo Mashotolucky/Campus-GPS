@@ -46,10 +46,14 @@ export class AdminHomeComponent implements OnInit {
     })
   }
 
-  getDirections(){
+  async getDirections(){
     const name = this.form.value.name;
     this.name = this.form.value.name;
-    // this.router.navigate(['dashboard/map/direction'], { queryParams: { name: name }});
+    
+    await this.getDirections()
+    .then(() =>{
+      location.reload();
+    })
     
   }
 
