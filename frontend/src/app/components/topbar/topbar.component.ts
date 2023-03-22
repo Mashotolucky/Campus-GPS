@@ -18,4 +18,8 @@ export class TopbarComponent implements OnInit {
     this.isAdmin = this.authService.isAdmin();
   }
 
+  logout(){
+    localStorage.clear();
+  }
+
 }
