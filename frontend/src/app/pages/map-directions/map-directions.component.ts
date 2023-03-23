@@ -31,7 +31,6 @@ export class MapDirectionsComponent implements OnInit {
       maxZoom: 18
     }).addTo(this.map);
 
-    // const latLng = this.getLiveLocation(this.map);
     
     
     this.reloadOnInit();
@@ -93,11 +92,24 @@ export class MapDirectionsComponent implements OnInit {
         this.map.on('locationfound', (e: any) => {
           console.log(e.latlng);
 
-          latLngArray.unshift(e.latlng);
-          console.log(latLngArray);
+          if (navigator.geolocation) {
+            navigator.geolocation.watchPosition((position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+      
+              latLngArray.unshift({lat: lat, lng: lng});
+              console.log(latLngArray);
+              // Update the map with the new position
+              // this.updateMap(lat, lng);
+            });
+          } else {
+            console.log('Geolocation is not supported by this browser.');
+          }
+
+          
 
           this.makeRoute(latLngArray);
-          
+
           let radius = e.accuracy / 340 ;
           let circle = L.circle(e.latlng, {
             radius: radius,
@@ -118,7 +130,10 @@ export class MapDirectionsComponent implements OnInit {
         this.map.on('locationfound', (e: any) => {
           console.log(e.latlng);
 
-          this.mapService.getLiveLocation(e.latLng);
+          latLngArray[0] = e.latlng;
+          console.log(latLngArray);
+
+          this.makeRoute(latLngArray);
           
           let radius = e.accuracy / 340;
           let circle = L.circle(e.latlng, {
@@ -130,7 +145,12 @@ export class MapDirectionsComponent implements OnInit {
 
           this.map.on('locationupdate', (e: any) => {
             circle.setLatLng(e.latlng);
-            circle.setRadius(e.accuracy / 340);
+            circle.setRadius(e.accuracy / 2);
+
+            // latLngArray[0] = e.latlng;
+            // console.log(latLngArray);
+
+            // this.makeRoute(latLngArray);
 
           });
         });
