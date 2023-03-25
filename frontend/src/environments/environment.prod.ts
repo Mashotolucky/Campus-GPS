@@ -1,6 +1,6 @@
 const BaseUrl = 'http://10.10.2.155:3100';
-const Backend = '/api/campusgps/';
-const devbaseUrl = 'http://localhost:4000/api/campusgps/';
+const Backend = 'https://gifted-windbreaker-hen.cyclic.app/api/campusgps/';
+const devbaseUrl = 'https://gifted-windbreaker-hen.cyclic.app/api/campusgps/';
 
 export const environment = {
   production: true,
