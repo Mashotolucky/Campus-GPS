@@ -78,4 +78,12 @@ export class MapboxServiceService {
   passLocation(): any{
     return this.liveLatLng;
   }
+
+  getDistanceAPI(): Observable<any>{
+    const url = "https://api.geoapify.com/v1/routematrix?apiKey=d853606affd141a2aee80f098d2edd4f";
+
+    const raw = {"mode":"walk","sources":[{"location":[8.73784862216246,48.543061473317266]}],"targets":[{"location":[8.73784862216246,48.543061473317266]}]};
+
+    return this.http.post(url,raw);
+  }
 }

@@ -196,3 +196,5 @@ VALUES
 (8, -25.54043763842531, 28.0961287021637);
 
 
+-- Alternatives for Cafeteria
+

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { log } from 'console';
 import * as L from 'leaflet';
 import  'leaflet-routing-machine';
+// import 'leaflet-geometryutil';
+
 import { MapboxServiceService } from 'src/app/services/mapbox-service.service';
 
 @Component({
@@ -48,6 +51,8 @@ export class MapDirectionsComponent implements OnInit {
         console.log("Clicked coordinates:", clickedCoords);
     });
 
+    this.distanceAPI();
+
   }
 
   addMaker(map: any, latlng: any): void{
@@ -81,7 +86,9 @@ export class MapDirectionsComponent implements OnInit {
         latLngArray.push(latLng);
         console.log(latLngArray);
 
-
+        // const distance = L.GeometryUtil.distance(this.map, latLngArray[0], latLngArray[1]);
+        // console.log('distance', distance);
+        
         this.arraylist = latLngArray;
         
                 
@@ -164,58 +171,16 @@ export class MapDirectionsComponent implements OnInit {
 
   makeRoute(route: any): void{
     let routePolyline = L.polyline(route, {color: 'red', weight: 2.5}).addTo(this.map);
+
   }
 
-
-  // getLiveLocation(map: any): any{
-
-  //   map.locate({setView: true});
-  //   map.on('locationfound', (e: any) => {
-  //     console.log(e.latlng);
-
-  //     let radius = e.accuracy / 340 ;
-  //     let circle = L.circle(e.latlng, {
-  //       radius: radius,
-  //       fillColor: 'blue',
-  //       fillOpacity: 0.2,
-  //       stroke: false
-  //     }).addTo(map);
-  //   });
-
-  //   map.on('locationerror', (e: any) => {
-  //     console.log(e.message);
-  //   });
-
-  //   map.on('load', (e: any) => {
-  //     map.locate({watch: true, enableHighAccuracy: true});
-  //   });
-
-  //   map.on('locationfound', (e: any) => {
-  //     console.log(e.latlng);
-
-  //     this.mapService.getLiveLocation(e.latLng);
+  distanceAPI(){
+    this.mapService.getDistanceAPI()
+    .subscribe(res =>{
+      console.log('distance API',res);
       
-  //     let radius = e.accuracy / 340;
-  //     let circle = L.circle(e.latlng, {
-  //       radius: radius,
-  //       fillColor: 'blue',
-  //       fillOpacity: 0.2,
-  //       stroke: false
-  //     }).addTo(map);
-
-  //     map.on('locationupdate', (e: any) => {
-  //       circle.setLatLng(e.latlng);
-  //       circle.setRadius(e.accuracy / 340);
-
-  //     });
-  //   });
-
-  //   map.on('locationerror', (e: any) => {
-  //     console.log(e.message);
-  //   });
-
-
-  // }
+    })
+  }
 
 }
 
