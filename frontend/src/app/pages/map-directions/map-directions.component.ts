@@ -38,7 +38,8 @@ export class MapDirectionsComponent implements OnInit {
 
     
     
-    this.reloadOnInit();
+    this.alternativeRoute();
+    // this.mainRoute();
 
     const clickedCoords: { lat: any; lng: any; }[] = [];
 
@@ -61,7 +62,7 @@ export class MapDirectionsComponent implements OnInit {
     this.marker = L.marker([latlng.lat, latlng.lng]).addTo(map)
   }
 
-  reloadOnInit():void {
+  mainRoute():void {
     this.route.queryParams.subscribe(params => {
       const name = params['name'];
       console.log('location name', name);
@@ -76,6 +77,8 @@ export class MapDirectionsComponent implements OnInit {
         this.mapData = res;
         console.log(this.mapData.mainroute.data);
         routeArr.push(this.mapData.mainroute.data.waypoints);
+
+        // this.calculateDistance(latLngArray)
   
         const waypoints = routeArr[0];
         const latLngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
@@ -90,8 +93,6 @@ export class MapDirectionsComponent implements OnInit {
         latLngArray.push(latLng);
         console.log(latLngArray);
 
-        // const distance = L.GeometryUtil.distance(this.map, latLngArray[0], latLngArray[1]);
-        // console.log('distance', distance);
         
         this.arraylist = latLngArray;
         
@@ -120,7 +121,121 @@ export class MapDirectionsComponent implements OnInit {
           
 
           this.makeRoute(latLngArray);
-          this.calculateDistance(latLngArray)
+          this.calculateDistance(latLngArray);
+
+          let radius = e.accuracy / 340 ;
+          let circle = L.circle(e.latlng, {
+            radius: radius,
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+            stroke: false
+          }).addTo(this.map);
+        });
+
+        this.map.on('locationerror', (e: any) => {
+          console.log(e.message);
+        });
+
+        this.map.on('load', (e: any) => {
+          this.map.locate({watch: true, enableHighAccuracy: true});
+        });
+
+        this.map.on('locationfound', (e: any) => {
+          console.log(e.latlng);
+
+          latLngArray[0] = e.latlng;
+          console.log(latLngArray);
+
+          this.makeRoute(latLngArray);
+          
+          let radius = e.accuracy / 340;
+          let circle = L.circle(e.latlng, {
+            radius: radius,
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+            stroke: false
+          }).addTo(this.map);
+
+          this.map.on('locationupdate', (e: any) => {
+            circle.setLatLng(e.latlng);
+            circle.setRadius(e.accuracy / 2);
+
+            // latLngArray[0] = e.latlng;
+            // console.log(latLngArray);
+
+            // this.makeRoute(latLngArray);
+
+          });
+        });
+
+        this.map.on('locationerror', (e: any) => {
+          console.log(e.message);
+        });
+      })
+    });
+  }
+
+  //alternative route function --
+  alternativeRoute(): void{
+    this.route.queryParams.subscribe(params => {
+      const name = params['name'];
+      console.log('location name', name);
+      const nameBody = {name: name}
+
+      const routeArr: any[] = [];
+      // Do something with the name parameter
+      this.mapService.getLocationByName(nameBody)
+      .subscribe(res => {
+        console.log(res);
+        
+        this.mapData = res;
+        console.log(this.mapData.alternative.data);
+        routeArr.push(this.mapData.alternative.data.alternatives);
+
+        // this.calculateDistance(latLngArray)
+
+        const waypoints = routeArr[0];
+        const latLngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
+
+        const location = this.mapData.alternative.data.location[0];
+
+        const latLng = {
+          lat: location.lat,
+          lng: location.lng
+        };
+
+        latLngArray.push(latLng);
+        console.log(latLngArray);
+
+        
+        this.arraylist = latLngArray;
+        
+                
+        this.addMaker(this.map, this.mapData.alternative.data.location[0]);
+
+        //  Get Current live location
+        this.map.locate({setView: true});
+        this.map.on('locationfound', (e: any) => {
+          console.log(e.latlng);
+
+          if (navigator.geolocation) {
+            navigator.geolocation.watchPosition((position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+      
+              latLngArray.unshift({lat: lat, lng: lng});
+              console.log(latLngArray);
+              // Update the map with the new position
+              // this.updateMap(lat, lng);
+            });
+          } else {
+            console.log('Geolocation is not supported by this browser.');
+          }
+
+          
+
+          this.makeRoute(latLngArray);
+          this.calculateDistance(latLngArray);
 
           let radius = e.accuracy / 340 ;
           let circle = L.circle(e.latlng, {
