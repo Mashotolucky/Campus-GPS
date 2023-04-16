@@ -4,6 +4,8 @@ import { log } from 'console';
 import * as L from 'leaflet';
 import  'leaflet-routing-machine';
 // import 'leaflet-geometryutil';
+import { getDistance } from 'geolib';
+
 
 import { MapboxServiceService } from 'src/app/services/mapbox-service.service';
 
@@ -69,14 +71,16 @@ export class MapDirectionsComponent implements OnInit {
       // Do something with the name parameter
       this.mapService.getLocationByName(nameBody)
       .subscribe(res => {
+        console.log(res);
+        
         this.mapData = res;
-        console.log(this.mapData.data);
-        routeArr.push(this.mapData.data.waypoints);
+        console.log(this.mapData.mainroute.data);
+        routeArr.push(this.mapData.mainroute.data.waypoints);
   
         const waypoints = routeArr[0];
         const latLngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
 
-        const location = this.mapData.data.location[0];
+        const location = this.mapData.mainroute.data.location[0];
 
         const latLng = {
           lat: location.lat,
@@ -92,7 +96,7 @@ export class MapDirectionsComponent implements OnInit {
         this.arraylist = latLngArray;
         
                 
-        this.addMaker(this.map, this.mapData.data.location[0]);
+        this.addMaker(this.map, this.mapData.mainroute.data.location[0]);
 
         //  Get Current live location
         this.map.locate({setView: true});
@@ -116,6 +120,7 @@ export class MapDirectionsComponent implements OnInit {
           
 
           this.makeRoute(latLngArray);
+          this.calculateDistance(latLngArray)
 
           let radius = e.accuracy / 340 ;
           let circle = L.circle(e.latlng, {
@@ -180,6 +185,17 @@ export class MapDirectionsComponent implements OnInit {
       console.log('distance API',res);
       
     })
+  }
+
+  calculateDistance(wayponits: any){
+    console.log(wayponits);
+    
+    const coord1 = { latitude: wayponits[0].lat, longitude: wayponits[0].lng }; // San Francisco
+    const coord2 = { latitude: wayponits[1].lat, longitude: wayponits[1].lng };
+
+    const distance = getDistance(coord1, coord2);
+
+    console.log('Geo Distance',distance);
   }
 
 }

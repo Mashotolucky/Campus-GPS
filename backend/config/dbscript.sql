@@ -59,7 +59,25 @@ CREATE TABLE public.waypoints(
 	Primary Key(ID)
 );
 
+-- create alternative waypoints
+
+CREATE TABLE public.alternative_waypoints(
+    ID serial NOT NULL,
+    locationID integer,
+    lat numeric,
+    lng numeric,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+	Primary Key(ID)
+);
+
 ALTER TABLE public.waypoints
+    ADD FOREIGN KEY (locationID)
+    REFERENCES public.location (ID)
+    ON DELETE CASCADE
+    NOT VALID;
+
+ALTER TABLE public.alternative_waypoints
     ADD FOREIGN KEY (locationID)
     REFERENCES public.location (ID)
     ON DELETE CASCADE
@@ -196,5 +214,21 @@ VALUES
 (8, -25.54043763842531, 28.0961287021637);
 
 
--- Alternatives for Cafeteria
+-- Alternatives waypoints
+
+-- Ruth First Hall
+
+INSERT INTO location (name, lat, lng)
+VALUES ('Ruth First Hall', -25.541657366056807, 28.096021413803104);
+
+-- Cafeteria
+
+INSERT INTO location (name, lat, lng)
+VALUES ('Cafeteria', -25.540902298033718, 28.095281124114994);
+
+INSERT INTO waypoints (locationID, lat, lng) 
+VALUES (9, -25.539968136783752, 28.09558153152466),
+       (9, -25.54051024160783, 28.095136284828186),
+       (9, -25.54054412307794, 28.095077276229862);
+
 
