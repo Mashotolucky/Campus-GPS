@@ -32,14 +32,14 @@ export class MapDirectionsComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.testPoint();
+    // this.testPoint();
 
     this.map = L.map('map').setView([-25.54050582, 28.096141], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18
     }).addTo(this.map);
 
-    // this.alternativeRoute();
+    this.alternativeRoute();
     // this.mainRoute();
     // this.getFastestRoute();
 
@@ -69,7 +69,6 @@ export class MapDirectionsComponent implements OnInit {
       const nameBody = {name: name}
 
       const routeArr: any[] = [];
-      const alternativeArr: any[] = [];
 
       // Do something with the name parameter
       this.mapService.getLocationByName(nameBody)
@@ -85,10 +84,7 @@ export class MapDirectionsComponent implements OnInit {
         const waypoints = routeArr[0];
         const latLngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
 
-        alternativeArr.push(this.mapData.alternative.data.alternatives);
-        const alternatives = alternativeArr[0];
-        const altlatLngArray = alternatives.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
-
+      
         const location = this.mapData.mainroute.data.location[0];
 
         const latLng = {
@@ -97,7 +93,6 @@ export class MapDirectionsComponent implements OnInit {
         };
 
         latLngArray.push(latLng);
-        altlatLngArray.push(latLng);
 
         console.log(latLngArray);
 
@@ -118,7 +113,6 @@ export class MapDirectionsComponent implements OnInit {
               const lng = position.coords.longitude;
       
               latLngArray.unshift({lat: lat, lng: lng});
-              altlatLngArray.unshift({lat: lat, lng: lng});
 
               console.log(latLngArray);
 
@@ -409,22 +403,6 @@ export class MapDirectionsComponent implements OnInit {
 
   testPoint(): void{
 
-    //  Get Current live location
-    // this.map.locate({setView: true});
-    // this.map.on('locationfound', (e: any) => {
-    //   console.log(e.latlng);
-
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.watchPosition((position) => {
-    //       const lat = position.coords.latitude;
-    //       const lng = position.coords.longitude;
-  
-    //     });
-    //   } else {
-    //     console.log('Geolocation is not supported by this browser.');
-    //   }
-    // });
-
     // Define the polygons
     const polygon1 = [[-25.54050540139702, 28.095023632049564], [-25.540471519915943, 28.09564590454102], [-25.539890693037382, 28.09558153152466], [-25.539847130908075, 28.09505045413971]];
     const polygon2 = [[5, 5], [5, 15], [15, 15], [15, 5]];
@@ -442,6 +420,7 @@ export class MapDirectionsComponent implements OnInit {
         // area2.push(point);
         isFound = false;
         this.alternativeRoute();
+        
         
       }
 
