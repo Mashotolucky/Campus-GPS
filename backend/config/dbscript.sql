@@ -71,6 +71,16 @@ CREATE TABLE public.alternative_waypoints(
 	Primary Key(ID)
 );
 
+CREATE TABLE public.alternative_waypoints_two(
+    ID serial NOT NULL,
+    locationID integer,
+    lat numeric,
+    lng numeric,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+	Primary Key(ID)
+);
+
 ALTER TABLE public.waypoints
     ADD FOREIGN KEY (locationID)
     REFERENCES public.location (ID)
@@ -78,6 +88,12 @@ ALTER TABLE public.waypoints
     NOT VALID;
 
 ALTER TABLE public.alternative_waypoints
+    ADD FOREIGN KEY (locationID)
+    REFERENCES public.location (ID)
+    ON DELETE CASCADE
+    NOT VALID;
+
+ALTER TABLE public.alternative_waypoints_two
     ADD FOREIGN KEY (locationID)
     REFERENCES public.location (ID)
     ON DELETE CASCADE
@@ -234,3 +250,15 @@ VALUES
 (6, -25.540481200340093, 28.09515774250031),
 (6, -25.540529602449073, 28.095066547393802),
 (6, -25.540703849879574, 28.095248937606815);
+
+
+INSERT INTO alternative_waypoints_two (locationID, lat, lng)
+VALUES
+(6, -25.54139115671956, 28.096053600311283),
+(6, -25.54141535759284, 28.096048235893253),
+(6, -25.541608964403096, 28.09535086154938),
+(6, -25.541318554070457, 28.095302581787113),
+(6, -25.54109106548527, 28.095066547393802),
+(6, -25.540916818617458, 28.095071911811832);
+
+-- -25.54139115671956, lng: 28.096053600311283

@@ -32,16 +32,18 @@ export class MapDirectionsComponent implements OnInit {
 
   ngOnInit(): void {
     
-    // this.testPoint();
+    this.testPoint();
 
     this.map = L.map('map').setView([-25.54050582, 28.096141], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18
     }).addTo(this.map);
 
-    this.alternativeRoute();
+    // this.alternativeRoute();
     // this.mainRoute();
     // this.getFastestRoute();
+
+    this.locations();
 
     const clickedCoords: { lat: any; lng: any; }[] = [];
 
@@ -59,7 +61,8 @@ export class MapDirectionsComponent implements OnInit {
   }
   // added marker to destination 
   addMaker(map: any, latlng: any): void{
-    this.marker = L.marker([latlng.lat, latlng.lng]).addTo(map)
+    this.marker = L.marker([latlng.lat, latlng.lng]).addTo(map);
+    // this.marker.bindPopup('Cafeteria').openPopup();
   }
 
   mainRoute():void {
@@ -106,7 +109,7 @@ export class MapDirectionsComponent implements OnInit {
         this.map.locate({setView: true});
         this.map.on('locationfound', (e: any) => {
           console.log(e.latlng);
-
+          sessionStorage.setItem("location", JSON.stringify(e.latlng));
           if (navigator.geolocation) {
             navigator.geolocation.watchPosition((position) => {
               const lat = position.coords.latitude;
@@ -142,6 +145,7 @@ export class MapDirectionsComponent implements OnInit {
 
         this.map.on('locationfound', (e: any) => {
           console.log(e.latlng);
+          sessionStorage.setItem("location", JSON.stringify(e.latlng));
 
           latLngArray[0] = e.latlng;
           console.log(latLngArray);
@@ -159,7 +163,7 @@ export class MapDirectionsComponent implements OnInit {
           this.map.on('locationupdate', (e: any) => {
             circle.setLatLng(e.latlng);
             circle.setRadius(e.accuracy / 2);
-
+            sessionStorage.setItem("location", JSON.stringify(e.latlng));
             // latLngArray[0] = e.latlng;
             // console.log(latLngArray);
 
@@ -217,11 +221,15 @@ export class MapDirectionsComponent implements OnInit {
         this.map.locate({setView: true});
         this.map.on('locationfound', (e: any) => {
           console.log(e.latlng);
+          sessionStorage.setItem("location", JSON.stringify(e.latlng));
 
           if (navigator.geolocation) {
             navigator.geolocation.watchPosition((position) => {
               const lat = position.coords.latitude;
               const lng = position.coords.longitude;
+              console.log(position.coords);
+              // localStorage.setItem('currentLocation', position.coords)
+              
       
               latLngArray.unshift({lat: lat, lng: lng});
               console.log(latLngArray);
@@ -256,6 +264,7 @@ export class MapDirectionsComponent implements OnInit {
         this.map.on('locationfound', (e: any) => {
           console.log(e.latlng);
 
+          sessionStorage.setItem("location", JSON.stringify(e.latlng));
           latLngArray[0] = e.latlng;
           console.log(latLngArray);
 
@@ -272,7 +281,124 @@ export class MapDirectionsComponent implements OnInit {
           this.map.on('locationupdate', (e: any) => {
             circle.setLatLng(e.latlng);
             circle.setRadius(e.accuracy / 2);
+            sessionStorage.setItem("location", JSON.stringify(e.latlng));
+            // latLngArray[0] = e.latlng;
+            // console.log(latLngArray);
 
+            // this.makeRoute(latLngArray);
+
+          });
+        });
+
+        this.map.on('locationerror', (e: any) => {
+          console.log(e.message);
+        });
+      })
+    });
+  }
+
+  alternativeRouteTwo(): void{
+    this.route.queryParams.subscribe(params => {
+      const name = params['name'];
+      console.log('location name', name);
+      const nameBody = {name: name}
+
+      const routeArr: any[] = [];
+      // Do something with the name parameter
+      this.mapService.getLocationByName(nameBody)
+      .subscribe(res => {
+        console.log(res);
+        
+        this.mapData = res;
+        console.log(this.mapData.alternative_two.data);
+        routeArr.push(this.mapData.alternative_two.data.alternatives_two);
+
+        // this.calculateDistance(latLngArray)
+
+        const waypoints = routeArr[0];
+        const latLngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
+
+        const location = this.mapData.alternative_two.data.location[0];
+
+        const latLng = {
+          lat: location.lat,
+          lng: location.lng
+        };
+
+        latLngArray.push(latLng);
+        console.log(latLngArray);
+
+        
+        this.arraylist = latLngArray;
+        
+                
+        this.addMaker(this.map, this.mapData.alternative_two.data.location[0]);
+
+        //  Get Current live location
+        this.map.locate({setView: true});
+        this.map.on('locationfound', (e: any) => {
+          console.log(e.latlng);
+          sessionStorage.setItem("location", JSON.stringify(e.latlng));
+
+          if (navigator.geolocation) {
+            navigator.geolocation.watchPosition((position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              console.log(position.coords);
+              // localStorage.setItem('currentLocation', position.coords)
+              
+      
+              latLngArray.unshift({lat: lat, lng: lng});
+              console.log(latLngArray);
+              // Update the map with the new position
+              // this.updateMap(lat, lng);
+            });
+          } else {
+            console.log('Geolocation is not supported by this browser.');
+          }
+
+          
+
+          this.makeRoute(latLngArray);
+
+          let radius = e.accuracy / 340 ;
+          let circle = L.circle(e.latlng, {
+            radius: radius,
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+            stroke: false
+          }).addTo(this.map);
+        });
+
+        this.map.on('locationerror', (e: any) => {
+          console.log(e.message);
+        });
+
+        this.map.on('load', (e: any) => {
+          this.map.locate({watch: true, enableHighAccuracy: true});
+        });
+
+        this.map.on('locationfound', (e: any) => {
+          console.log(e.latlng);
+
+          sessionStorage.setItem("location", JSON.stringify(e.latlng));
+          latLngArray[0] = e.latlng;
+          console.log(latLngArray);
+
+          this.makeRoute(latLngArray);
+          
+          let radius = e.accuracy / 340;
+          let circle = L.circle(e.latlng, {
+            radius: radius,
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+            stroke: false
+          }).addTo(this.map);
+
+          this.map.on('locationupdate', (e: any) => {
+            circle.setLatLng(e.latlng);
+            circle.setRadius(e.accuracy / 2);
+            sessionStorage.setItem("location", JSON.stringify(e.latlng));
             // latLngArray[0] = e.latlng;
             // console.log(latLngArray);
 
@@ -321,74 +447,6 @@ export class MapDirectionsComponent implements OnInit {
     
   }
 
-  // getFastestRoute(): void{
-  //   this.route.queryParams.subscribe(params => {
-  //     const name = params['name'];
-  //     console.log('location name', name);
-  //     const nameBody = {name: name}
-
-  //     const mainArr: any[] = [];
-  //     const alternativeArr: any[] = [];
-
-  //     // Do something with the name parameter
-  //     this.mapService.getLocationByName(nameBody)
-  //     .subscribe(res => {
-  //       console.log(res);
-        
-  //       this.mapData = res;
-  //       console.log(this.mapData.mainroute.data);
-  //       mainArr.push(this.mapData.mainroute.data.waypoints);
-
-  //       alternativeArr.push(this.mapData.alternative.data.alternatives);
-  //       const alternatives = alternativeArr[0];
-  //       const altlatLngArray = alternatives.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
-
-  //       const waypoints = mainArr[0];
-  //       const mainlatLlng: ngArray = waypoints.map(({ lat, lng }: { lat: number, lng: number }) => ({ lat, lng }));
-
-  //       //distination coordinates
-  //       const location = this.mapData.mainroute.data.location[0];
-
-  //       const latLng = {
-  //         lat: location.lat,
-  //         lng: location.lng
-  //       };
-
-  //       mainlatLngArray.push(latLng);
-  //       altlatLngArray.push(latLng);
-
-  //       console.log(mainlatLngArray);
-
-        
-  //       this.arraylist = mainlatLngArray;
-        
-  //       //  Get Current live location
-  //       this.map.locate({setView: true});
-  //       this.map.on('locationfound', (e: any) => {
-  //         console.log(e.latlng);
-
-  //         if (navigator.geolocation) {
-  //           navigator.geolocation.watchPosition((position) => {
-  //             const lat = position.coords.latitude;
-  //             const lng = position.coords.longitude;
-      
-  //             mainlatLngArray.unshift({lat: lat, lng: lng});
-  //             console.log(mainlatLngArray);
-
-  //             altlatLngArray.unshift({lat: lat, lng: lng});
-  //             console.log(altlatLngArray);
-              
-  //             // Calculate distance
-  //             this.calculateDistance(mainlatLngArray, altlatLngArray);
-  //           });
-  //         } else {
-  //           console.log('Geolocation is not supported by this browser.');
-  //         }
-  //       });
-  //     })
-  //   });
-  // }
-
   isPointInPolygon(point: any, polygon: any) {
     let inside = false;
     for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
@@ -401,28 +459,87 @@ export class MapDirectionsComponent implements OnInit {
     return inside;
   }
 
+  fromB10: boolean = false;
+
   testPoint(): void{
 
+    this.route.queryParams.subscribe(params => {
+      const name = params['name'];
+      console.log('location name', name);
+      const nameBody = {name: name}
+
+      if(name == 'Cafeteria'){
+        const Cafeteria_polygon1 = [
+          [-25.540703849879574, 28.0973356962204],
+          [-25.540582844746368, 28.09490025043488],
+          [-25.539426029508814, 28.095077276229862],
+          [-25.539401828234045, 28.097212314605716]
+        ];
+
+        const Cafeteria_polygon2 = [
+          [-25.541047503792058, 28.09589803218842],
+          [-25.542581833892154, 28.095930218696594],
+          [-25.54234466743092, 28.097421526908878],
+          [-25.541071704734673, 28.097539544105533]
+        ];
+
+        // polygon2
+        // {lat: -25.541047503792058, lng: 28.09589803218842}
+        // 1
+        // : 
+        // {lat: -25.542581833892154, lng: 28.095930218696594}
+        // 2
+        // : 
+        // {lat: -25.54234466743092, lng: 28.097421526908878}
+        // 3
+        // : 
+        // {lat: -25.541071704734673, lng: 28.097539544105533}
+
+        const location = JSON.parse(sessionStorage.getItem("location") || '{}');
+
+        const point = [-25.539774527324056, 28.09562894563866];
+        let isFound = false;
+
+        if (this.isPointInPolygon(point, Cafeteria_polygon1)) {
+          isFound = true;
+          this.fromB10 = true;
+          this.alternativeRoute();
+
+        }else if(this.isPointInPolygon(point, Cafeteria_polygon2)){
+          this.alternativeRouteTwo();
+        }
+        else {
+          // area2.push(point);
+          isFound = false;
+          this.mainRoute();
+           
+        }
+      }
+      
+
+    });
+
+    
     // Define the polygons
     const polygon1 = [[-25.54050540139702, 28.095023632049564], [-25.540471519915943, 28.09564590454102], [-25.539890693037382, 28.09558153152466], [-25.539847130908075, 28.09505045413971]];
     const polygon2 = [[5, 5], [5, 15], [15, 15], [15, 5]];
 
     // Test each point in the polygons and differentiate the areas
     // const area1 = [], area2 = [];
-    var isFound = false;
+ 
 
-    const point = [-25.540292431928407, 28.095828294754032];
-      if (this.isPointInPolygon(point, polygon1)) {
-        isFound = true;
+    // const point = [-25.540292431928407, 28.095828294754032];
+    //   if (this.isPointInPolygon(point, polygon1)) {
+    //     isFound = true;
         
-        this.mainRoute();
-      } else {
-        // area2.push(point);
-        isFound = false;
-        this.alternativeRoute();
+    //     this.mainRoute();
+    //   } else {
+    //     // area2.push(point);
+    //     isFound = false;
+    //     this.alternativeRoute();
         
         
-      }
+    //   }
 
     // for (let i = 0; i < polygon1.length; i++) {
     //   const point = [-25.540365035198835, 28.095425963401798];
@@ -446,8 +563,45 @@ export class MapDirectionsComponent implements OnInit {
     // Print the differentiated areas
     // console.log('Area 1:', area1);
     // console.log('Area 2:', area2);
-    console.log('is Found = ', isFound);
+    // console.log('is Found = ', isFound);
     
+  }
+
+  locations(): void{
+
+    const redIcon = L.icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      iconSize: [17, 30],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      tooltipAnchor: [8, -16],
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+      shadowSize: [30, 30],
+      shadowAnchor: [12, 41]
+    });
+
+    
+    
+    const B10 = L.marker([-25.539677722476988, 28.09557616710663], { icon: redIcon }).addTo(this.map);
+    B10.bindPopup('Building 10').openPopup();
+
+    const OneStop = L.marker([-25.54049572097484, 28.095329403877262], { icon: redIcon }).addTo(this.map);
+    OneStop.bindPopup('One Stop Registration').openPopup();
+
+    const ruthHall = L.marker([-25.541783210265034, 28.09585511684418], { icon: redIcon }).addTo(this.map);
+    ruthHall.bindPopup('Ruth First Hall').openPopup();
+
+    const library = L.marker([-25.540098822992334, 28.095468878746036], { icon: redIcon }).addTo(this.map);
+    library.bindPopup('Library').openPopup();
+
+
+    const iCenter = L.marker([-25.540098822992334, 28.095661997795105], { icon: redIcon }).addTo(this.map);
+    iCenter.bindPopup('I-Center').openPopup();
+
+    // -25.541313713892283, lng: 28.095785379409794
+
+    const gymnesium = L.marker([-25.541420197766897, 28.095790743827823], { icon: redIcon }).addTo(this.map);
+    gymnesium.bindPopup('Gymnesium').openPopup();
   }
 
 }

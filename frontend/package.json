@@ -30,6 +30,7 @@
     "geolib": "^3.3.3",
     "leaflet": "^1.9.3",
     "leaflet-providers": "^1.13.0",
+    "leaflet-rotatedmarker": "^0.2.0",
     "leaflet-routing-machine": "^3.2.12",
     "mapbox-gl": "^2.13.0",
     "ngx-bootstrap": "^8.0.0",

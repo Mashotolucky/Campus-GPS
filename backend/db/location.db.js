@@ -24,9 +24,21 @@ const getLocationByNameDb = async(name) =>{
     WHERE location.name = $1;
         `,[name]
     );
+
+    const alternative_two = await pool.query(
+        `SELECT json_build_object(
+            'location', json_agg(location.*),
+            'alternatives_two', json_agg(alternative_waypoints_two.*)
+        ) AS data
+    FROM location
+    LEFT JOIN alternative_waypoints_two ON location.id = alternative_waypoints_two.locationID
+    WHERE location.name = $1;
+        `,[name]
+    );
     const data = {
         mainroute: location.rows[0],
-        alternative: alternative.rows[0]
+        alternative: alternative.rows[0],
+        alternative_two: alternative_two.rows[0]
     }
     console.log(data);
     return data; 
