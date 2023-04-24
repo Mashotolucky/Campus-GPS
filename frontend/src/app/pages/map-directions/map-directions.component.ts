@@ -483,21 +483,9 @@ export class MapDirectionsComponent implements OnInit {
           [-25.541071704734673, 28.097539544105533]
         ];
 
-        // polygon2
-        // {lat: -25.541047503792058, lng: 28.09589803218842}
-        // 1
-        // : 
-        // {lat: -25.542581833892154, lng: 28.095930218696594}
-        // 2
-        // : 
-        // {lat: -25.54234466743092, lng: 28.097421526908878}
-        // 3
-        // : 
-        // {lat: -25.541071704734673, lng: 28.097539544105533}
-
         const location = JSON.parse(sessionStorage.getItem("location") || '{}');
 
-        const point = [-25.539774527324056, 28.09562894563866];
+        const point = [-25.541638005397672, 28.09682610838899];
         let isFound = false;
 
         if (this.isPointInPolygon(point, Cafeteria_polygon1)) {
@@ -517,54 +505,7 @@ export class MapDirectionsComponent implements OnInit {
       }
       
 
-    });
-
-    
-    // Define the polygons
-    const polygon1 = [[-25.54050540139702, 28.095023632049564], [-25.540471519915943, 28.09564590454102], [-25.539890693037382, 28.09558153152466], [-25.539847130908075, 28.09505045413971]];
-    const polygon2 = [[5, 5], [5, 15], [15, 15], [15, 5]];
-
-    // Test each point in the polygons and differentiate the areas
-    // const area1 = [], area2 = [];
- 
-
-    // const point = [-25.540292431928407, 28.095828294754032];
-    //   if (this.isPointInPolygon(point, polygon1)) {
-    //     isFound = true;
-        
-    //     this.mainRoute();
-    //   } else {
-    //     // area2.push(point);
-    //     isFound = false;
-    //     this.alternativeRoute();
-        
-        
-    //   }
-
-    // for (let i = 0; i < polygon1.length; i++) {
-    //   const point = [-25.540365035198835, 28.095425963401798];
-    //   if (this.isPointInPolygon(point, polygon1)) {
-    //     area1.push(point);
-    //   } else {
-    //     area2.push(point);
-    //   }
-    // }
-
-    
-    // for (let i = 0; i < polygon2.length; i++) {
-    //   const point = polygon2[i];
-    //   if (this.isPointInPolygon(point, polygon2)) {
-    //     area1.push(point);
-    //   } else {
-    //     area2.push(point);
-    //   }
-    // }
-
-    // Print the differentiated areas
-    // console.log('Area 1:', area1);
-    // console.log('Area 2:', area2);
-    // console.log('is Found = ', isFound);
-    
+    });    
   }
 
   locations(): void{
