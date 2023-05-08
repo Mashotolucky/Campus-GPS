@@ -460,13 +460,14 @@ export class MapDirectionsComponent implements OnInit {
   }
 
   fromB10: boolean = false;
+  to12_120: boolean = false;
+  to12_115: boolean = false;
 
   testPoint(): void{
 
     this.route.queryParams.subscribe(params => {
       const name = params['name'];
       console.log('location name', name);
-      const nameBody = {name: name}
 
       if(name == 'Cafeteria'){
         const Cafeteria_polygon1 = [
@@ -485,7 +486,7 @@ export class MapDirectionsComponent implements OnInit {
 
         const location = JSON.parse(sessionStorage.getItem("location") || '{}');
 
-        const point = [-25.541638005397672, 28.09682610838899];
+        const point = [ -25.53985197114545, 28.095607335980155];
         let isFound = false;
 
         if (this.isPointInPolygon(point, Cafeteria_polygon1)) {
@@ -503,6 +504,57 @@ export class MapDirectionsComponent implements OnInit {
            
         }
       }
+
+      if(name== '12-120'){
+        
+      const Building12_polygon1 = [
+        [-25.54043763842531, 28.09590743015682],
+        [-25.541599284069996, 28.095382147369357],
+        [-25.54196229602594, 28.097445723111996],
+        [-25.5401181839, 28.097579721536835]
+      ]
+
+      const location = JSON.parse(sessionStorage.getItem("location") || '{}');
+
+        const point = [ -25.541086225297907, 28.096430283144006];
+        let isFound = false;
+
+      if (this.isPointInPolygon(point, Building12_polygon1)) {
+        isFound = true;
+        this.to12_120 = true;
+        this.alternativeRoute();
+      }else{
+        this.to12_120 = true;
+        this.mainRoute();
+      }
+
+      
+      }
+
+      if(name== '12-115'){
+        
+        const Building12_polygon1 = [
+          [-25.54043763842531, 28.09590743015682],
+          [-25.541599284069996, 28.095382147369357],
+          [-25.54196229602594, 28.097445723111996],
+          [-25.5401181839, 28.097579721536835]
+        ]
+  
+        const location = JSON.parse(sessionStorage.getItem("location") || '{}');
+  
+          const point = [ -25.541086225297907, 28.096430283144006];
+          let isFound = false;
+  
+          if (this.isPointInPolygon(point, Building12_polygon1)) {
+            isFound = true;
+            this.to12_115 = true;
+            this.alternativeRoute();
+          }else{
+            this.to12_115 = true;
+            this.mainRoute();
+          }      
+        }
+        // this.mainRoute();
       
 
     });    
