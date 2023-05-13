@@ -458,10 +458,11 @@ export class MapDirectionsComponent implements OnInit {
     }
     return inside;
   }
-
+  
   fromB10: boolean = false;
   to12_120: boolean = false;
   to12_115: boolean = false;
+  to10_G28: boolean = false;
 
   testPoint(): void{
 
@@ -485,8 +486,8 @@ export class MapDirectionsComponent implements OnInit {
         ];
 
         const location = JSON.parse(sessionStorage.getItem("location") || '{}');
-
-        const point = [ -25.53985197114545, 28.095607335980155];
+        // -25.54156056272984, lng: 28.096645155919703
+        const point = [-25.54156056272984, 28.096645155919703];
         let isFound = false;
 
         if (this.isPointInPolygon(point, Cafeteria_polygon1)) {
@@ -515,8 +516,9 @@ export class MapDirectionsComponent implements OnInit {
       ]
 
       const location = JSON.parse(sessionStorage.getItem("location") || '{}');
+      // -25.539837450432742, lng: 28.09568861094379}
 
-        const point = [ -25.541086225297907, 28.096430283144006];
+        const point = [ -25.539837450432742, 28.09568861094379];
         let isFound = false;
 
       if (this.isPointInPolygon(point, Building12_polygon1)) {
@@ -542,7 +544,7 @@ export class MapDirectionsComponent implements OnInit {
   
         const location = JSON.parse(sessionStorage.getItem("location") || '{}');
   
-          const point = [ -25.541086225297907, 28.096430283144006];
+          const point = [ -25.540563483913726, 28.096155648836074];
           let isFound = false;
   
           if (this.isPointInPolygon(point, Building12_polygon1)) {
@@ -554,6 +556,33 @@ export class MapDirectionsComponent implements OnInit {
             this.mainRoute();
           }      
         }
+      
+      if(name == '10-G28'){
+        this.to10_G28 = true;
+
+        const Building10_polygon1 = [
+          [-25.539881012565584, 28.09474979092123],
+          [-25.539832610194797, 28.09707186467343],
+          [-25.542731877737573, 28.097173757055206],
+          [-25.54279479929429,  28.094320924848496]
+        ]
+
+        const location = JSON.parse(sessionStorage.getItem("location") || '{}');
+        // -25.539392147722772, lng: 28.096202664504112}
+
+          const point = [ -25.539392147722772, 28.096202664504112];
+          let isFound = false;
+  
+          if (this.isPointInPolygon(point, Building10_polygon1)){
+            isFound = true;
+            this.mainRoute();
+          }
+          else{
+            isFound = true;
+            this.alternativeRoute();
+          }
+      }
+
         // this.mainRoute();
       
 
