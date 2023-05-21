@@ -3,11 +3,11 @@ const app = express();
 const path = require('path');
 
 // Serve only the static files form the dist directory
-app.use(express.static(dirname + '/dist/frontend'));
+app.use(express.static(dirname + '/dist'));
 
 app.get('/*', function(req,res) {
 
-res.sendFile(path.join(dirname+'/dist/frontend/index.html'));
+res.sendFile(path.join(dirname+'/dist/index.html'));
 });
 
 

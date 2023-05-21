@@ -11,6 +11,8 @@ const connectionString = `postgresql://${process.env.PGUSER}:${process.env.PGPAS
 const pool = new Pool({
   connectionString: isProduction? process.env.DATABASE_URL : connectionString,
   ssl: isProduction ? { rejectUnauthorized: false }: false,
+  secure: true,
+  secureOptions: {rejectUnauthorized: false}
 });
 
 module.exports = {

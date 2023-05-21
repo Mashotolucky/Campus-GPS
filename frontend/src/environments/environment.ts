@@ -4,11 +4,11 @@
 
 
 const BaseUrl = 'http://10.10.2.155:3100';
-// const Backend = 'https://gifted-windbreaker-hen.cyclic.app/api/campusgps/';
-// const devbaseUrl = 'https://gifted-windbreaker-hen.cyclic.app/api/campusgps/';
+const Backend = 'https://campus-gps.onrender.com/api/campusgps/';
+const devbaseUrl = 'https://campus-gps.onrender.com/api/campusgps/';
 
-const Backend = 'http://localhost:4000/api/campusgps/';
-const devbaseUrl = 'http://localhost:4000/api/campusgps/';
+// const Backend = 'http://localhost:4000/api/campusgps/';
+// const devbaseUrl = 'http://localhost:4000/api/campusgps/';
 
 export const environment = {
   production: false,
