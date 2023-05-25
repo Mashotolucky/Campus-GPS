@@ -9,11 +9,15 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SidebarComponent implements OnInit {
 
   isAdmin: any;
+  isLecture: any;
+  isStudent: any;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
+    this.isLecture = this.authService.isLecture();
+    this.isStudent = this.authService.isStudent();
   }
 
 }
