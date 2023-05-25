@@ -612,6 +612,9 @@ export class MapDirectionsComponent implements OnInit {
 
       // this.mainRoute()
 
+      // this.alternativeRoute()
+      
+
     });    
   }
 
