@@ -71,6 +71,8 @@ export class MapDirectionsComponent implements OnInit {
       console.log('location name', name);
       const nameBody = {name: name}
 
+      localStorage.setItem('history', name)
+
       const routeArr: any[] = [];
 
       // Do something with the name parameter

@@ -49,6 +49,14 @@ CREATE TABLE public.location(
 	Primary Key(ID)
 );
 
+CREATE TABLE public.history(
+    ID serial NOT NULL,
+    name varchar(255),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+	Primary Key(ID)
+);
+
 CREATE TABLE public.waypoints(
     ID serial NOT NULL,
     locationID integer,

@@ -19,7 +19,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            TOTAL LECTURES</div>
+                            TOTAL LECTURERS</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{totLectCount}}</div>
     
                     </div>
@@ -52,8 +52,8 @@
     </div>
 
     <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
+    <div class="col-xl-3 col-md-6 mb-4"  >
+        <!-- <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -77,11 +77,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
+        </div> -->
         <div class="card border-left-warning shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -98,6 +94,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Pending Requests Card Example -->
+    <!-- <div class="col-xl-3 col-md-6 mb-4 " data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            HISTORY LOCATIONS</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">6</div>
+                    </div>
+                    <div class="col-auto">
+                       
+                        <i class="fa-solid fa-building-user fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 </div>
 
 <!-- Content Row -->
@@ -223,6 +238,25 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a [routerLink]="['map/direction']" [queryParams]="{name: name}"><button type="button" class="btn btn-primary" (click)="getDirections()" href="map/direction">Directions</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="staticBackdrop2"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Location</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+                  History
+            
+        </div>
+        <div class="modal-footer">
+        
           <a [routerLink]="['map/direction']" [queryParams]="{name: name}"><button type="button" class="btn btn-primary" (click)="getDirections()" href="map/direction">Directions</button></a>
         </div>
       </div>
