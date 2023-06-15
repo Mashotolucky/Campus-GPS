@@ -462,6 +462,10 @@ export class MapDirectionsComponent implements OnInit {
   }
   
   fromB10: boolean = false;
+  gencor: boolean = false;
+  Cafeteria: boolean = false;
+  I_center: boolean = false;
+  Library: boolean = false;
   to12_120: boolean = false;
   to12_115: boolean = false;
   to10_G28: boolean = false;
@@ -472,8 +476,10 @@ export class MapDirectionsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const name = params['name'];
       console.log('location name', name);
-
+ 
+    
       if(name == 'Cafeteria'){
+        this.Cafeteria = true;
         const Cafeteria_polygon1 = [
           [-25.540703849879574, 28.0973356962204],
           [-25.540582844746368, 28.09490025043488],
@@ -612,8 +618,22 @@ export class MapDirectionsComponent implements OnInit {
           } 
       }
 
-      // this.mainRoute()
+      if(name == 'Ruth First Hall'){
+        this.gencor = true;
+        this.mainRoute()
+      }
 
+      if(name == 'I-Center'){
+        this.I_center = true;
+        this.mainRoute()
+      }
+
+      if(name == 'Library'){
+        this.Library = true;
+        this.mainRoute()
+      }
+      
+      // this.mainRoute()
       // this.alternativeRoute()
       
 
